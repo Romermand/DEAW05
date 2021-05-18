@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+
+    <title>Acceso a servicios Web</title>
+  </head>
+
+  <body>
+    <h1>Acceso a servicios web</h1>
+    <p id="result"></p>
+  </body>
+
+  <script>
+
+    fetch('http://192.168.1.44:8080/api/v1/employees',{
+        method: 'GET'
+    })
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(data) {
+        let result = `<h2> Listar todos los empleados </h2>`;
+        data.forEach((employee) => {
+            const { id, firstName, lastName, emailId } = employee
+            result +=
+            `<div>
+                <h5> ID: ${id} </h5>
+                <ul class="w3-ul">
+                    <li> First Name : ${firstName}</li>
+                    <li> Last Name : ${lastName}</li>
+                    <li> Email: ${emailId} </li>
+                </ul>
+            </div>`;
+
+            document.getElementById('result').innerHTML = result;
+        })
+    })
+    .catch(function(err) {
+        console.error(err);
+    });
+
+  </script>
+</html>

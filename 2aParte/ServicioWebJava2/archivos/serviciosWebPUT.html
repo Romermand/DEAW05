@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+
+    <title>Acceso a servicios Web</title>
+
+    <link rel="stylesheet" href="">
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <h1>Acceso a servicios Web</h1>
+    <h2>Actualizar empleado</h2>
+    <form  id="updateData">
+      <p>ID: <input type="text" name="" id="id"></p>
+      <p>Nombre: <input type="text" name="" id="firstName"></p>
+      <p>Apellido: <input type="text" name="" id="lastName"></p>
+      <p>Email: <input type="text" name="" id="emailId"></p>
+      <input type="submit" value="ACTUALIZAR EMPLEADO">
+    </form>
+    <p id="result"></p>
+  </body>
+  <script>
+    document.getElementById('updateData').addEventListener('submit', updateData);
+    
+    function updateData(event){
+      event.preventDefault();
+
+      let id = document.getElementById('id').value;
+      let firstName = document.getElementById('firstName').value;
+      let lastName = document.getElementById('lastName').value;
+      let emailId = document.getElementById('emailId').value;
+
+      fetch('http://192.168.1.44:8080/api/v1/employees/' + id,{
+          method: 'PUT',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            "firstName":firstName,
+            "lastName":lastName,
+            "emailId":emailId}),
+      })
+      .then(function(response) {
+          return response.text();
+      })
+      .then(function(data) {
+          console.log('data = ', data);
+          document.getElementById('result').innerHTML = data;
+      })
+      .catch(function(err) {
+          console.error(err);
+      });
+    }
+
+  </script>
+</html>

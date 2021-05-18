@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+
+    <title>Acceso a servicios Web</title>
+  </head>
+
+  <body>
+    <h1>Acceso a servicios Web</h1>
+    <h2> Listar un empleado </h2>
+    <form  id="mostrarData">
+      <p>ID: <input type="text" name="" id="id"></p>
+      <input type="submit" value="MOSTRAR EMPLEADO">
+    </form>
+    <p id="result"></p>
+  </body>
+
+  <script>
+    document.getElementById('mostrarData').addEventListener('submit', mostrarData);
+    
+    function mostrarData(event){
+      event.preventDefault();
+
+      let id = document.getElementById('id').value;
+      fetch('http://192.168.1.44:8080/api/v1/employees/' + id,{
+          method: 'GET'
+      })
+      .then(function(response) {
+          return response.json();
+      })
+      .then(function(data) {
+          let result = `<div>
+                  <h5> ID: ${data.id} </h5>
+                  <ul class="w3-ul">
+                      <li> First Name : ${data.firstName}</li>
+                      <li> Last Name : ${data.lastName}</li>
+                      <li> Email: ${data.emailId} </li>
+                  </ul>
+              </div>`;
+
+              document.getElementById('result').innerHTML = result;
+      })
+      .catch(function(err) {
+          console.error(err);
+      }); 
+    }
+
+  </script>
+</html>
